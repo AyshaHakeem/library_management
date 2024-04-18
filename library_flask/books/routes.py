@@ -131,7 +131,7 @@ def return_book():
             transaction.return_date = data['return']
             transaction.total_amount= data['total_amount'] or 0
             transaction.received_amount= data['received_amount'] or 0
-            transaction.description = f'{transaction.description}\nBook returned by member - {today}'
+            transaction.description = f'{transaction.description} \n Book returned by member - {today}'
         db.session.commit()
         flash('Book returned to library', 'success')
     except:
