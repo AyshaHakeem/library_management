@@ -58,8 +58,7 @@
         {% if transaction.description %}
         <div class="relative mb-4">
                 <label for="return" class="leading-7 text-sm text-gray-600">Description</label>
-                <textarea id="description" required name="description" value="{{transaction.description}}" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-              
+                <textarea id="description" name="description" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">{{transaction.description}}</textarea>
         </div>
         {% endif %}
       <button class="inline-flex items-center bg-gray-200 border-0 py-2 px-3 focus:outline-none hover:bg-gray-300 text-base mt-4 md:mt-0 mb-4">
