@@ -1,0 +1,52 @@
+{% extends "page.html" %}
+
+{% block  content %}
+<section class="text-gray-600 body-font relative px-4 md:px-0">
+  <form class=" md:w-1/2 bg-white flex flex-col mx-auto w-full md:py-8 mt-8 md:mt-0" 
+    action="/book-issue" method="post"
+    >
+
+      <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Book Issue</h2>
+
+      <p class="leading-relaxed mb-5 text-gray-600"></p>
+      <div class="relative mb-4">
+        <label for="member" class="leading-7 text-sm text-gray-600">Member</label>
+        <span class="text-sm text-gray-400">Filter Applied: Outstanding amout < Rs.500</span>
+        <select id="member" name="member" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          {% if members %} 
+          {% for member in members %}
+          <option value="{{member.id}}">{{member.fullname}} - {{member.email}}</span></option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+      <div class="relative mb-4">
+        <label for="book" class="leading-7 text-sm text-gray-600">Book</label>
+        <span class="text-sm text-gray-400">Filter Applied: Status not booked</span>
+        <select id="book" name="book" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          {% if books %} 
+          {% for book in books %}
+          <option value="{{book.id}}">{{book.title}}</span></option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+
+      <div class="relative mb-4 flex">
+        <div class="w-1/2 mr-3">
+        <label for="issue" class="leading-7 text-sm text-gray-600">Issue Date</label>
+        <input type="date" id="issue" default="{{today}}" required name="issue" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+        <div class="w-1/2">
+        <label for="monthly_amount" class="leading-7 text-sm text-gray-600">Monthly Fee</label>
+        <input type="number" id="monthly_amount" name="monthly_amount" value="50" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+      </div>
+     
+      <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Submit</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
+
+

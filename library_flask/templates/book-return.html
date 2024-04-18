@@ -1,0 +1,147 @@
+{% extends "page.html" %}
+
+{% block  content %}
+<section class="text-gray-600 body-font relative px-4 md:px-0">
+  <form class=" md:w-1/2 bg-white flex flex-col mx-auto w-full md:py-8 mt-8 md:mt-0" 
+    action="/book-return" method="post"
+    >
+
+      <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Book Return</h2>
+      <p class="leading-relaxed mb-5 text-gray-600"></p>
+      <div class="relative mb-4">
+        <label for="member" class="leading-7 text-sm text-gray-600">Member</label>
+        <select id="member" name="member" required class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <option value="">Select Member</span></option>
+          {% if members %} 
+          {% for member in members %}
+          <option value="{{member.id}}">{{member.fullname}} - {{member.email}}</span></option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+      <div class="relative mb-4">
+        <label for="book" class="leading-7 text-sm text-gray-600">Book</label>
+        <select id="book" name="book" required class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <option value="">Choose Book</span></option>
+          <!-- {% if books %} 
+          {% for book in books %}
+          <option value="">Choose Book</span></option>
+          {% endfor %}
+          {% endif %} -->
+        </select>
+      </div>
+
+      <div class="relative mb-4 flex">
+        <div class="w-1/2 mr-3">
+          <label for="issue" class="leading-7 text-sm text-gray-600">Issue Date</label>
+        <input type="date" id="issue" required default="{{today}}" required name="issue" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+        <div class="w-1/2">
+          <label for="return" class="leading-7 text-sm text-gray-600">Return Date</label>
+        <input type="date" id="return" required name="return" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+      </div>
+
+      <div class="relative mb-4 flex">
+        <div class="w-1/2 mr-3">
+          <label for="monthly_amount" class="leading-7 text-sm text-gray-600">Monthly Fee</label>
+          <input type="number" disabled id="monthly_amount" name="monthly_amount" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+
+          <label for="received_amount" class="leading-7 text-sm text-gray-600">Amount Received</label>
+          <input type="number" id="received_amount" name="received_amount" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <span class="text-sm text-gray-400">Total amount received from member</span>
+        </div>
+        <div class="w-1/2 mt-3">
+          <label for="total_amount" value='0' class="leading-7 text-sm text-gray-600">Total Fee</label>
+          <input type="number" id="total_amount" name="total_amount" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+
+          <label for="outstanding_amount" class="leading-7 text-sm text-gray-600">Outstanding Amount</label>
+          <input type="number" id="outstanding_amount" name="outstanding_amount" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+      </div>
+     
+      <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Submit</button>
+    </div>
+  </form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // filter book field based on chosen member to dispaly only issued books
+        $('#member').change(function() {
+            let memberId = $(this).val();
+            if (!memberId){
+                return ''
+            }
+            $.ajax({
+                type: 'GET',
+                url: '/get-issue-details',  // URL to fetch books associated with the selected member
+                data: {member_id: memberId},
+                success: function(response) {
+                    $('#book').empty(); // Clear existing options
+                    console.log(response)
+                    if (response.books) {
+                        $('#book').append('<option value="">Choose Book</option>')
+                        $.each(response.books, function(index, book) {
+                            $('#book').append('<option value="' + book.id + '">' + book.title + '</option>');
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText, status, error);
+                }
+            });
+        });
+
+        // fetch and display issue date and monthyl amount
+        $('#book').change(function() {
+            let memberId = $('#member').val();
+            let bookId = $('#book').val();
+            if (!memberId || !bookId){
+                return ''
+            }
+            $.ajax({
+                type: 'GET',
+                url: '/get-issue-details',
+                data: {member_id: memberId, book_id: bookId},
+                success: (response) => {
+                    let date = new Date(response.result), 
+                        year = date.getFullYear(),
+                        month = (date.getMonth() + 1).toString().padStart(2, '0'),
+                        day = date.getDate().toString().padStart(2, '0');
+                    let formattedDate = `${year}-${month}-${day}`;
+                    $('#issue').val(formattedDate);
+                    $('#monthly_amount').val(response.amount);
+                    
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText, status, error);
+                }
+            });
+        });
+    
+        $('#return').change(()=>{
+            let issue = new Date($('#issue').val()),
+                return_date = new Date($('#return').val())
+            let daysDifference = Math.round( (return_date - issue) / (1000 * 60 * 60 * 24))
+            let monthly = $('#monthly_amount').val()
+            $('#total_amount').val(Math.trunc(daysDifference / 30) * monthly);
+            // console.log(daysDifference); // Output the difference in days
+        })
+
+        $('#received_amount').change(()=>{
+          let total = $('#total_amount').val(),
+              received = $('#received_amount').val()
+          if (total > received ){
+            $('#outstanding_amount').val(total - received)
+          }
+        })
+
+        })
+    
+</script>
+
+</section>
+{% endblock %}
+
+

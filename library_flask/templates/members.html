@@ -1,0 +1,49 @@
+{% extends "page.html" %}
+{% block content %}
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 md:py-24 mx-auto">
+      <div class="flex flex-col w-full md:mb-20">
+        <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">Library Members</h1>
+        {% if members %} 
+        <div class=" w-full mx-auto overflow-auto">
+          <table class="table-auto w-full text-left whitespace-no-wrap">
+            <thead>
+              <tr>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Full Name</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Email</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Username</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Status</th>
+                <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for member in members %}
+              <tr>
+                <td class="px-4 py-3">{{member.fullname}}</td>
+                <td class="px-4 py-3">{{member.email}}</td>
+                <td class="px-4 py-3">{{member.username}}</td>
+                <td class="px-4 py-3 text-lg text-gray-900">{{ 'Book(s)' if member.books else 'No books'}}</td>
+                <td class="w-10 text-center">
+                  <a href="/members/{{member.id}}" class="text-blue-500 underline">More</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% else %}
+        <p class="lg:w-2/3 leading-relaxed text-base">List of added members are displayed here</p>
+        {% endif %}
+      </div>
+      
+      <div class="flex mt-4 lg:w-2/3 w-full mx-auto mb-4">
+        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+          <a href="/add_member">Add Member</a>
+        </button>
+      </div>
+    </div>
+</section>
+
+{% endblock %}

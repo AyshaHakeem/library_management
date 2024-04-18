@@ -1,0 +1,13 @@
+{% extends "page.html" %}
+
+{% block  content %}
+
+<h1>{{ current_user.username }}</h1>
+
+<img src="{{ image_file if image_file else url_for('static', filename='default.jpeg') }}">
+
+<button class="button mb-4"> <a href="/logout">Logout</a> </button>
+
+
+
+{% endblock %}

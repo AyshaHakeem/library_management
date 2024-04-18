@@ -1,0 +1,49 @@
+{% extends "page.html" %}
+{% block content %}
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-col w-full mb-20">
+        <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">Library Books</h1>
+        {% if books %} 
+        <div class=" w-full mx-auto overflow-auto">
+          <table class="table-auto w-full text-left whitespace-no-wrap">
+            <thead>
+              <tr>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Title</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Author(s)</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Publisher</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Rating</th>
+                <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in books %}
+              <tr>
+                <td class="px-4 py-3 w-1/3">{{book.title}}</td>
+                <td class="px-4 py-3 w-1/3">{{book.authors}}</td>
+                <td class="px-4 py-3">{{book.publisher}}</td>
+                <td class="px-4 py-3">{{book.rating}}</td>
+                <td class="px-4 py-3">
+                  {{'Booked' if book.booked else ''}}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% else %}
+        <p class="lg:w-2/3 leading-relaxed text-base">List of imported books are displayed here</p>
+        {% endif %}
+      </div>
+      
+      <div class="flex mt-4 lg:w-2/3 w-full mx-auto">
+        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+          <a href="/import_books">Add Books</a>
+        </button>
+      </div>
+    </div>
+</section>
+
+{% endblock %}

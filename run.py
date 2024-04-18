@@ -1,7 +1,8 @@
-from library_flask import app
+from library_flask import create_app
 
-# Load environment variables from .env file
-
+app = create_app()
 
 if __name__ == '__main__':
-    app.run(port=8000, debug=True)
+    app.run()
+
+    

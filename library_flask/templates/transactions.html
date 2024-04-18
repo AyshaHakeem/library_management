@@ -1,0 +1,43 @@
+{% extends "page.html" %}
+{% block content %}
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 md:py-24 mx-auto">
+      <div class="flex flex-col w-full mb-20">
+        <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">Library Transactions</h1>
+        {% if transactions %} 
+        <div class=" w-full mx-auto overflow-auto">
+          <table class="table-auto w-full text-left whitespace-no-wrap">
+            <thead>
+              <tr>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Member email</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Book Title</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Issue Date</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th>
+                <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in transactions %}
+              <tr>
+                <td class="px-4 py-3">{{t.member_email}}</td>
+                <td class="px-4 py-3">{{t.book_title}}</td>
+                <td class="px-4 py-3">{{ t.booked_date.strftime('%Y-%m-%d') if t.booked_date else '' }}</td>
+                <td class="w-10 text-center">
+                  <a href="/transactions/{{t.id}}" class="text-blue-500 underline">More</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% else %}
+        <p class="lg:w-2/3 leading-relaxed text-base">List of added members are displayed here</p>
+        {% endif %}
+      </div>
+      
+    </div>
+</section>
+
+{% endblock %}
