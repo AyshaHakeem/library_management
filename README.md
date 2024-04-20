@@ -15,7 +15,7 @@ A web application built on the Flask framework for managing library transactions
 ![add-member](./library_flask/static/images/forms-member.png)
 ### View members, books, and transactions
 ![members](./library_flask/static/images/list-members.png)
-![books](./library_flask/static/images/list-books.png)
+![books](./library_flask/static/images/books-list.png)
 ![transactions](./library_flask/static/images/list-transactions.png)
 ### Record book issue and return
 ![book-issue](./library_flask/static/images/forms-book-issue.png)
